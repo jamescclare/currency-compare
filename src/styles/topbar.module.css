@@ -1,0 +1,26 @@
+.topbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    height: 5rem;
+    padding: 1rem;
+    width: 100%;
+
+    border-bottom: 1px solid black;
+}
+
+.branding {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
