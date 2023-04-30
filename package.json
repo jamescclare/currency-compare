@@ -1,0 +1,35 @@
+{
+  "name": "currency-compare",
+  "version": "0.1.0",
+  "private": true,
+  "author": "James Clare",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.6.0",
+    "@emotion/react": "^11.10.8",
+    "@emotion/styled": "^11.10.8",
+    "@next-auth/prisma-adapter": "^1.0.6",
+    "@prisma/client": "^4.13.0",
+    "@supabase/supabase-js": "^2.21.0",
+    "@types/node": "18.16.3",
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.1",
+    "classnames": "^2.3.2",
+    "eslint": "8.39.0",
+    "eslint-config-next": "13.3.2",
+    "framer-motion": "^10.12.4",
+    "next": "13.3.2",
+    "next-auth": "^4.22.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "prisma": "^4.13.0"
+  }
+}
