@@ -6,13 +6,13 @@ import { Card, CardHeader, CardBody, CardFooter, Text, HStack, VStack, Heading, 
 import { ArrowForwardIcon } from '@chakra-ui/icons'
 import CurrencyChart from '@/components/CurrencyChart'
 import CountrySelect from '@/components/CountrySelect'
+import { RandomQuote } from './api/demo';
+import Demo from '@/components/Demo';
+import CURRENCIES from '@/libs/currencies';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
-  const [fromCountry, setFromCountry] = React.useState();
-  const [toCountry, setToCountry] = React.useState();
-
   return (
     <>
       <Head>
@@ -24,7 +24,7 @@ export default function Home() {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <HStack spacing="2rem">
-          <Card>
+          {/* <Card>
             <CardHeader>
               <Heading size='md'>Try comparing currencies!</Heading>
             </CardHeader>
@@ -34,11 +34,19 @@ export default function Home() {
             <CardFooter>
               <HStack width="100%">
                 <Text whiteSpace="nowrap">Convert from</Text>
-                <CountrySelect />
+                <CountrySelect defaultCode={FROM_COUNTRY_DEFAULT}/>
                 <Text>to</Text>
-                <CountrySelect />
+                <CountrySelect defaultCode={TO_COUNTRY_DEFAULT}/>
               </HStack>
             </CardFooter>
+          </Card> */}
+          <Card>
+            <CardHeader>
+              <Heading size='md'>Compare current prices of {CURRENCIES.length} currencies</Heading>
+            </CardHeader>
+            <CardBody>
+              <Demo />
+            </CardBody>
           </Card>
           <Card>
             <CardBody>
