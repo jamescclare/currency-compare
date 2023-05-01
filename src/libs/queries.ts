@@ -1,11 +1,10 @@
 import { gql } from "@apollo/client";
 import client from "./swop-apollo-client";
 
-export type Quote = { quoteCurrency: string, quote: number };
+type SWOPQuote = { quoteCurrency: string, quote: number };
+export type Quote = { currency: string, quote: number };
 
-const compareMultipleCurrencies = async (baseCurrency: string, quoteCurrencies: string[]): Promise<Array<Quote>> => {
-    console.log(baseCurrency, quoteCurrencies);
-
+const compareMultipleCurrencies = async (fromCurrency: string, toCurrencies: string[]): Promise<Array<Quote>> => {
     const query = gql`query CompareMultipleCurrencies($baseCurrency: String, $quoteCurrencies: [String!]) {
         latest(baseCurrency: $baseCurrency, quoteCurrencies: $quoteCurrencies) {
           quote
@@ -13,15 +12,28 @@ const compareMultipleCurrencies = async (baseCurrency: string, quoteCurrencies: 
         }
     }`;
 
+    // The free tier fo this API only lets you use "EUR" as the base currency, 
+    // so we have to do our own normaisation.
+    const baseCurrency = "EUR";
+    const quoteCurrencies = [fromCurrency, ...toCurrencies];
+
     const { data } = await client.query({ query, variables: { baseCurrency, quoteCurrencies } });
-    
-    return data.latest;
+
+    const isFromCurrency = ({ quoteCurrency }: SWOPQuote) => quoteCurrency === fromCurrency;
+
+    const { quote: normalisationQuote } = data.latest.find(isFromCurrency);
+
+    return data.latest
+        .filter((quote: SWOPQuote) => !isFromCurrency(quote))
+        .map(({ quote, quoteCurrency }: SWOPQuote) => ({
+            quote: quote / normalisationQuote,
+            currency: quoteCurrency
+        }));
 };
 
-const compareTwoCurrencies = async (baseCurrency: string, quoteCurrencies: string) => {
-    const latest = await compareMultipleCurrencies(baseCurrency, [quoteCurrencies]);
-
-    return latest[0];
-};
+const compareTwoCurrencies = async (fromCurrency: string, toCurrency: string) => {
+    const quotes = await compareMultipleCurrencies(fromCurrency, [toCurrency]);
+    return quotes[0];
+}
 
 export { compareMultipleCurrencies, compareTwoCurrencies };

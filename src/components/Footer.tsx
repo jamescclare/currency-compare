@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 const Footer = () => (
     <div className={cx('footer')}>
         <Text fontSize="sm">Currency Compare</Text>
-        <Text fontSize="sm">Created by James Clare</Text>
+        <Text fontSize="sm">A demo project by James Clare</Text>
     </div>
 );
 

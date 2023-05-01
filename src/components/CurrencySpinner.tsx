@@ -1,25 +1,21 @@
-import { getRandomCurrency } from '@/libs/currencies';
+import { findName, getRandomCurrency } from '@/libs/currencies';
+import { Quote } from '@/libs/queries';
 import { RandomQuote } from '@/pages/api/demo';
 import { Heading } from '@chakra-ui/react';
 import * as React from 'react';
+import CurrencyValue from './CurrencyValue';
 
-type Props = { currencyCode?: string, onStoppedSpinning: () => void };
+type Props = { quote?: Quote };
 
 const DEFAULT_TICKRATE = 100;
 
-const CurrencySpinner = ({ currencyCode, onStoppedSpinning }: Props) => {
-    const isFirstRender = React.useRef(true);
-    const [tickrate, setTickrate] = React.useState(currencyCode ? 0 : DEFAULT_TICKRATE);
+const CurrencySpinner = ({ quote }: Props) => {
+    const [tickrate, setTickrate] = React.useState(quote ? 0 : DEFAULT_TICKRATE);
     const [code, setCode] = React.useState("AUD");
+    const [value, setValue] = React.useState<number>();
 
     React.useEffect(() => {
         if (tickrate <= 0) {
-            if (isFirstRender.current) {
-                isFirstRender.current = false;
-            } else {
-                onStoppedSpinning();
-            }
-               
             return;
         };
 
@@ -31,10 +27,12 @@ const CurrencySpinner = ({ currencyCode, onStoppedSpinning }: Props) => {
     }, [tickrate])
 
     React.useEffect(() => {
-        if (currencyCode) {
+        if (quote) {
             const handleTimeout = (current: number) => {
-                if (current >= 2000) {
+                if (current >= 300) {
                     setTickrate(0);
+                    setCode(quote.currency);
+                    setValue(quote.quote);
                     return;
                 }
 
@@ -45,9 +43,13 @@ const CurrencySpinner = ({ currencyCode, onStoppedSpinning }: Props) => {
 
             handleTimeout(tickrate);
         }
-    }, [currencyCode]);
+    }, [quote]);
 
-    return <Heading size='2xl'>{code}</Heading>
+    return <CurrencyValue 
+        code={code}
+        name={findName(code) || ''}
+        value={value}
+    />
 };
 
 export default CurrencySpinner;

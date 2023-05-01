@@ -5,6 +5,11 @@
   align-items: center;
   padding: 2rem 6rem;
   min-height: calc(100vh - 8rem);
+  background-color: #F0F7F4;
+}
+
+.center {
+  align-items: center;
 }
 
 .description {

@@ -1,0 +1,17 @@
+.currency-value {
+    position: relative;
+    cursor: pointer;
+}
+
+.settings {
+    position: absolute !important;
+    top: 0rem;
+    right: 0.5rem;
+
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.currency-value:hover .settings {
+    opacity: 1;
+}

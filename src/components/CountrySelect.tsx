@@ -3,18 +3,27 @@ import { Select } from '@chakra-ui/react';
 import { CURRENCIES } from '@/libs/currencies';
 
 type Props = { 
-    onChange?: () => string,
-    defaultCode: string 
+    onChange?: (currencyCode: string) => void,
+    defaultCode?: string,
+    exclude?: Array<string>
 }
 
-const CurrencySelect = ({ onChange, defaultCode }: Props) => {
+const CurrencySelect = ({ onChange, defaultCode, exclude = [] }: Props) => {
+    const handleChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
+        onChange && onChange(e.target.value);
+    };
+
     return (
-        <Select onChange={onChange}>
-            {CURRENCIES.map(({ code, name }) => 
-                <option key={code} value={code} selected={defaultCode === code}>
-                    {`${name} (${code})`}
-                </option>
-            )}
+        <Select onChange={handleChange} placeholder="Select currency">
+            {
+                CURRENCIES
+                    .filter(currency => !exclude.includes(currency.code))
+                    .map(({ code, name }) => 
+                        <option key={code} value={code} selected={defaultCode === code}>
+                            {`${name} (${code})`}
+                        </option>
+                    )
+            }
         </Select>
     );
 };

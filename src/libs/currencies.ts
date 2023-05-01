@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+// This could be loaded dynamically from graphQL but
+// that will eat up my request allowance, so hardcode it in here for now.
 const CURRENCIES = [
     {
         "code": "AED",
@@ -609,9 +611,11 @@ const CURRENCIES = [
 
 const CURRENCIES_CODES = CURRENCIES.map(({ code }) => code); 
 
-const currencyCodeSchema = z.string().refine(CURRENCIES_CODES.includes, { message: 'Invalid currency code' });
+const currencyCodeSchema = z.string().refine(s => CURRENCIES_CODES.includes(s), { message: 'Invalid currency code' });
 
-const getRandomCurrency = () => CURRENCIES[Math.floor(Math.random() * CURRENCIES.length)]
+const getRandomCurrency = () => CURRENCIES[Math.floor(Math.random() * CURRENCIES.length)];
+
+const findName = (code: string) => CURRENCIES.find((currency) => currency.code === code)?.name;
 
 export default CURRENCIES;
-export { CURRENCIES, CURRENCIES_CODES, currencyCodeSchema, getRandomCurrency };
+export { CURRENCIES, CURRENCIES_CODES, currencyCodeSchema, getRandomCurrency, findName };
